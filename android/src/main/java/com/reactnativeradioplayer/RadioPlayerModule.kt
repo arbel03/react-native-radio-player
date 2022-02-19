@@ -37,7 +37,7 @@ class RadioPlayerModule(reactContext: ReactApplicationContext) : ReactContextBas
   init {
     UiThreadUtil.runOnUiThread {
       player.addAnalyticsListener(EventLogger(DefaultTrackSelector(this.context)))
-      player.addMetadataOutput(this)
+      // player.addMetadataOutput(this)
       player.setThrowsWhenUsingWrongThread(true)
       player.setWakeMode(WAKE_MODE_NETWORK)
       player.addListener(this)

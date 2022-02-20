@@ -45,6 +45,13 @@ class RadioPlayerModule(reactContext: ReactApplicationContext) : ReactContextBas
   }
 
   @ReactMethod
+  fun radioSendStateEvent() {
+    UiThreadUtil.runOnUiThread {
+      computeAndSendStateEvent();
+    }
+  }
+
+  @ReactMethod
   fun radioURL(uri: String) {
     UiThreadUtil.runOnUiThread {
       val item: MediaItem = MediaItem.fromUri(uri)
@@ -66,17 +73,18 @@ class RadioPlayerModule(reactContext: ReactApplicationContext) : ReactContextBas
   @ReactMethod
   fun play() {
     UiThreadUtil.runOnUiThread {
-      if (player.isPlaying) {
-        player.stop()
+      if (!player.isPlaying) {
+        player.prepare()
+        player.play()
       }
-      player.prepare()
-      player.play()
     }
   }
 
   @ReactMethod
   fun stop() {
-    UiThreadUtil.runOnUiThread { player.stop() }
+    UiThreadUtil.runOnUiThread { 
+      player.stop() 
+    }
   }
 
   private fun computeAndSendStateEvent() {
@@ -114,6 +122,15 @@ class RadioPlayerModule(reactContext: ReactApplicationContext) : ReactContextBas
     reactContext
       .getJSModule(RCTDeviceEventEmitter::class.java)
       .emit(eventName, params)
+  }
+
+  override fun onCatalystInstanceDestroy() {
+    super.onCatalystInstanceDestroy()
+
+    UiThreadUtil.runOnUiThread {
+      stop();
+      player.release();
+    }
   }
 
   override fun onMetadata(metadata: Metadata) {

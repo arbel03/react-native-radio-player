@@ -3,6 +3,7 @@ import { NativeModules, NativeEventEmitter } from 'react-native';
 type RadioPlayerType = {
   radioURL(url: string): Promise<void>;
   radioURLWithMetadataSeparator(url: string, metadataSeparator: string): Promise<void>;
+  radioSendStateEvent(): Promise<void>;
   play(): Promise<void>;
   stop(): Promise<void>;
 };

@@ -13,7 +13,7 @@ export type RadioPlayerMetadata = {
 };
 
 const { RadioPlayer } = NativeModules;
-const RadioPlayerEvents = new NativeEventEmitter(NativeModules.RadioPlayer);
+const RadioPlayerEvents = new NativeEventEmitter();
 
 export default RadioPlayer as RadioPlayerType;
 export { RadioPlayerEvents };
